@@ -14,11 +14,17 @@ export default defineNuxtConfig({
   },
   buildModules: [
     '@unocss/nuxt',
+    '@vueuse/nuxt',
     'nuxt-windicss',
   ],
   css: [
     'assets/scss/styles.scss',
   ],
+  postcss: {
+    plugins: {
+      cssnano: false
+    }
+  },
   vite: {
     css: {
       preprocessorOptions: {

@@ -1,5 +1,8 @@
 <template>
   <div class="wrapper">
+    <div v-if="matrixMode" class="matrix-wrapper">
+      <Matrix />
+    </div>
     <nav class="sticky flex">
       <div class="flex-1 flex justify-center items-center">
         <!-- <a class="nav-item animate-pulse" @click="playlistOpen = true">
@@ -8,7 +11,12 @@
       </div>
     </nav>
     <div class="content">
-      <VTermynal class="custom-terminal">
+      <VTermynal
+        v-if="terminalOpen"
+        v-bind="terminalSettings"
+        class="custom-terminal"
+        @before-new-line="newLine($event)"
+      >
         <VtInput>
           Wake up, Neo...
         </VtInput>
@@ -46,23 +54,51 @@
         </div>
       </div>
     </footer>
+
+    <!-- <Dialog v-if="playlistOpen" @close="playlistOpen = false">
+      <Playlist />
+    </Dialog> -->
+
     <!-- From Nuxt starter template -->
     <div class="spotlight-wrapper">
       <div class="spotlight-gradient" />
     </div>
-    <Dialog v-if="playlistOpen" @close="playlistOpen = false">
-      <Playlist />
-    </Dialog>
   </div>
 </template>
 
 <script setup lang="ts">
 import { VTermynal, VtInput, VtProgress, VtText, VtSpinner } from "@lehoczky/vue-termynal"
 
-const playlistOpen = ref(false)
+const terminalSettings = {
+
+}
+
+const terminalOpen = ref(true)
+const lineCounter = ref(0)
+
+const matrixMode = ref(false)
+
+// const playlistOpen = ref(false)
+
+/** Triggered whenever the terminal pushes a newline. */
+function newLine(event: Event): void {
+  lineCounter.value++
+  if (lineCounter.value === 4) {
+    matrixMode.value = true
+  }
+}
+
+onMounted(() => {
+  console.log('This project is open source.')
+  console.log('Help improve it on GitHub: https://github.com/toniengelhardt/helloworld-3.0')
+})
 </script>
 
 <style lang="scss" scoped>
+.wrapper {
+  position: relative;
+  z-index: 1000;
+}
 nav  {
   height: $nav-size;
   .nav-item {
@@ -91,17 +127,20 @@ footer {
   // Terminal styling:
   // https://lehoczky.github.io/vue-termynal/styling.html
   .custom-terminal {
-    --vt-color-bg: rgba(255, 255, 255, .1);
-    @apply shadow-2xl shadow-black backdrop-filter backdrop-blur-md rounded-2xl;
+    --vt-color-bg: rgba(0,0,0, 0.5);
+    @apply shadow-xl shadow-black backdrop-filter backdrop-blur-md rounded-2xl;
     min-height: 30rem;
   }
+}
+.matrix-wrapper {
+  @apply fixed top-0 right-0 bottom-0 left-0;
 }
 .spotlight-wrapper {
   opacity: 0.75;
   transition: opacity 0.4s ease-in;
   pointer-events: none;
   .spotlight-gradient {
-    @apply fixed z-10 left-0 right-0 bg-gradient-to-r from-blue-500 via-fuchsia-400 to-pink-400;
+    @apply fixed z-10 left-0 right-0 bg-gradient-to-r from-blue-500 to-pink-400;
     filter: blur(20vh);
     height: 50vh;
     bottom: -30vh;
