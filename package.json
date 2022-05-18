@@ -10,6 +10,8 @@
     "preview": "nuxt preview"
   },
   "devDependencies": {
+    "@iconify-json/carbon": "^1.1.1",
+    "@unocss/nuxt": "^0.33.5",
     "nuxt": "3.0.0-rc.3",
     "nuxt-windicss": "^2.2.8",
     "sass": "^1.49.11"

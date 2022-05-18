@@ -13,9 +13,30 @@ export default defineNuxtConfig({
     ]
   },
   buildModules: [
+    '@unocss/nuxt',
     'nuxt-windicss',
   ],
   css: [
     'assets/scss/styles.scss',
   ],
+  vite: {
+    css: {
+      preprocessorOptions: {
+        scss: {
+          additionalData: `
+            @import "@/assets/scss/_variables.scss";
+          `,
+        },
+      },
+      devSourcemap: true,
+    },
+  },
+  unocss: {
+    uno: false,
+    attributify: false,
+    preflight: false,
+    icons: {
+      scale: 1.1,
+    },
+  },
 })
