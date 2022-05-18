@@ -2,12 +2,9 @@
   <div class="wrapper">
     <nav class="sticky flex">
       <div class="flex-1 flex justify-center items-center">
-        <!-- <a class="nav-item">
-          <i class="i-carbon-moon" />
-        </a> -->
-        <a class="nav-item animate-pulse">
+        <!-- <a class="nav-item animate-pulse" @click="playlistOpen = true">
           <i class="i-carbon-play" />
-        </a>
+        </a> -->
       </div>
     </nav>
     <div class="content">
@@ -53,11 +50,16 @@
     <div class="spotlight-wrapper">
       <div class="spotlight-gradient" />
     </div>
+    <Dialog v-if="playlistOpen" @close="playlistOpen = false">
+      <Playlist />
+    </Dialog>
   </div>
 </template>
 
 <script setup lang="ts">
 import { VTermynal, VtInput, VtProgress, VtText, VtSpinner } from "@lehoczky/vue-termynal"
+
+const playlistOpen = ref(false)
 </script>
 
 <style lang="scss" scoped>
@@ -90,7 +92,7 @@ footer {
   // https://lehoczky.github.io/vue-termynal/styling.html
   .custom-terminal {
     --vt-color-bg: rgba(255, 255, 255, .1);
-    @apply shadow-2xl shadow-black backdrop-filter backdrop-blur-md rounded-xl;
+    @apply shadow-2xl shadow-black backdrop-filter backdrop-blur-md rounded-2xl;
     min-height: 30rem;
   }
 }
