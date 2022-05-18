@@ -1,0 +1,17 @@
+{
+  "name": "helloworld-3.0",
+  "version": "0.1.0",
+  "author": "Toni Engelhardt",
+  "license": "MIT",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview"
+  },
+  "devDependencies": {
+    "nuxt": "3.0.0-rc.3",
+    "nuxt-windicss": "^2.2.8",
+    "sass": "^1.49.11"
+  }
+}
