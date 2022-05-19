@@ -61,9 +61,6 @@
         </template>
       </VTermynal>
 
-      <!-- QR code -->
-
-
     </div>
     <footer class="flex">
       <div class="flex-1 flex items-center">
