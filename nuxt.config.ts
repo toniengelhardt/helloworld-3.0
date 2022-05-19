@@ -1,6 +1,9 @@
 import { defineNuxtConfig } from 'nuxt'
 
 export default defineNuxtConfig({
+  publicRuntimeConfig: {
+    TELEGRAM_INVITE: process.env.TELEGRAM_INVITE || 'https://telegram.org/',
+  },
   meta: {
     htmlAttrs: {
       lang: 'en',
@@ -16,6 +19,7 @@ export default defineNuxtConfig({
     '@unocss/nuxt',
     '@vueuse/nuxt',
     'nuxt-windicss',
+    'vue-plausible',
   ],
   css: [
     'assets/scss/styles.scss',
@@ -44,5 +48,9 @@ export default defineNuxtConfig({
     icons: {
       scale: 1.1,
     },
+  },
+  plausible: {
+    domain: process.env.PLAUSIBLE_DOMAIN || '',
+    trackLocalhost: false,
   },
 })

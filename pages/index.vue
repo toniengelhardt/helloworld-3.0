@@ -14,63 +14,70 @@
 
       <!-- Terminal -->
       <VTermynal
-        v-if="terminalOpen"
         v-bind="terminalSettings"
         class="custom-terminal"
         @before-new-line="terminalNewLine($event)"
         @finish="terminalFinish()"
       >
-        <VtInput>
-          Wake up, Neo...
-        </VtInput>
-        <VtText />
-        <VtText>Uninstalling legacy systems</VtText>
-        <VtProgress prefix="[x] Finance     " />
-        <VtProgress prefix="[x] Governance  " />
-        <VtProgress prefix="[x] Education   " />
-        <VtProgress prefix="[x] Social      " />
-        <VtText />
-        <VtInput>
-          cd projects
-        </VtInput>
-        <VtInput>
-          ./helloworld-3.0
-        </VtInput>
+        <div
+          v-if="terminalAnimationComplete"
+          class="qr-container"
+        >
+          <div
+            class="cursor-pointer"
+            @click="openQR()"
+          >
+            <QrcodeVue
+              :value="qr.value"
+              :size="qr.size"
+              :level="qr.level"
+              background="rgba(0,0,0,0)"
+              foreground="#fff"
+            />
+          </div>
+          <p class="mt-4 text-sm">
+            <a :href="TELEGRAM_INVITE" target="_blank" class="hover:underline">
+              {{ TELEGRAM_INVITE }}
+            </a>
+          </p>
+        </div>
+        <template v-else>
+          <VtInput prompt="mrph:~$">
+            Wake up, Neo...
+          </VtInput>
+          <VtText />
+          <VtText>Uninstalling legacy systems</VtText>
+          <VtProgress prefix="[x] Finance     " />
+          <VtProgress prefix="[x] Governance  " />
+          <VtProgress prefix="[x] Education   " />
+          <VtProgress prefix="[x] Social      " />
+          <VtText />
+          <VtInput prompt="mrph:~$">
+            cd projects
+          </VtInput>
+          <VtInput prompt="mrph:~$">
+            ./helloworld-3.0.py
+          </VtInput>
+        </template>
       </VTermynal>
 
       <!-- QR code -->
-      <div
-        v-if="qrCodeOpen"
-        class="qr-container"
-        @click="openQR()"
-      >
-        <QrcodeVue
-          :value="qr.value"
-          :size="qr.size"
-          :level="qr.level"
-          background="rgba(0,0,0,0)"
-          foreground="#fff"
-        />
-      </div>
+
 
     </div>
     <footer class="flex">
       <div class="flex-1 flex items-center">
         <div class="flex-1 flex justify-center text-xl">
-          <!-- <div class="g-item filter blur-it text-blue-300">
-            <i class="i-carbon-gender-male" />
-          </div> -->
-          <div class="g-item flex-col">
-            <!-- <div class="text-lg">
-              <i class="i-carbon-transgender" />
-            </div> -->
-            <NuxtLink to="/impressum" class="text-sm">
+          <div class="flex items-center z-50">
+            <i class="i-ph-peace mr-6" />
+            <i class="i-carbon-transgender mr-6" />
+            <NuxtLink
+              to="/impressum"
+              class="text-base hover:underline"
+            >
               Impressum
             </NuxtLink>
           </div>
-          <!-- <div class="g-item filter blur-it text-pink-300">
-            <i class="i-carbon-gender-female" />
-          </div> -->
         </div>
       </div>
     </footer>
@@ -90,10 +97,12 @@
 import { VTermynal, VtInput, VtProgress, VtText, VtSpinner } from "@lehoczky/vue-termynal"
 import QrcodeVue from 'qrcode.vue'
 
-const qr = {
-  value: 'https://telegram.org/',
-  size: 200,
-  level: 'H' // L, M, Q, H
+const { TELEGRAM_INVITE } = useRuntimeConfig()
+
+const qr: any = {
+  value: TELEGRAM_INVITE,
+  size: 160,
+  level: 'H', // L, M, Q, H
 }
 
 const terminalSettings = {
@@ -103,25 +112,24 @@ const terminalSettings = {
   progressDelay: 30,
 }
 
-const terminalOpen = ref(true)
-const lineCounter = ref(0)
+const terminalAnimationComplete = ref(false)
 const matrixMode = ref(false)
-const qrCodeOpen = ref(false)
+
+let lineCounter = 0
 
 // const playlistOpen = ref(false)
 
 /** Triggered whenever the terminal pushes a newline. */
 function terminalNewLine(event: Event): void {
-  lineCounter.value++
-  if (lineCounter.value === 4) {
+  if (lineCounter === 3) {
     matrixMode.value = true
+  } else {
+    lineCounter++
   }
 }
 
 function terminalFinish() {
-  // matrixMode.value = false
-  terminalOpen.value = false
-  qrCodeOpen.value = true
+  terminalAnimationComplete.value = true
 }
 
 function openQR() {
@@ -152,14 +160,6 @@ nav  {
 }
 footer {
   height: $footer-size;
-  .g-item {
-    @apply flex justify-center items-center z-50;
-    min-width: $footer-size;
-    height: $footer-size;
-    &.blur-it {
-      filter: blur(1.25px);
-    }
-  }
 }
 .content {
   @apply place-content-center flex flex-col items-center justify-center p-4 md:p-8;
@@ -167,14 +167,25 @@ footer {
   // Terminal styling:
   // https://lehoczky.github.io/vue-termynal/styling.html
   .custom-terminal {
-    --vt-color-bg: rgba(0,0,0, 0.75);
-    @apply min-h-20rem md:min-h-30rem p-1rem pt-4rem text-xs md:(p-3rem pt-4rem text-lg)
-      shadow-xl shadow-black backdrop-filter backdrop-blur-md rounded-lg md:rounded-2xl;
+    --vt-color-bg: rgba(0,0,0, 0.85);
+    @apply min-h-20rem md:min-h-30rem p-1rem pt-4rem md:(p-3rem pt-4rem)
+      shadow-xl shadow-black backdrop-filter backdrop-blur-md rounded-2xl;
     min-height: 30rem;
+    &::before {
+      @media (max-width: 768px) {
+        opacity: 0;
+      }
+    }
+    &::after {
+      content: 'root@fsociety:~ —zsh';
+      top: 10px;
+    }
+    .vt__line {
+      @apply text-xs md:text-lg;
+    }
   }
   .qr-container {
-    @apply p-5 rounded-2xl z-50 cursor-pointer;
-    background-color: rgba(0,0,0, .9);
+    @apply flex flex-col h-15rem md:h-23rem justify-center items-center;
   }
 }
 .matrix-wrapper {
