@@ -24,16 +24,26 @@
           class="qr-container"
         >
           <div
-            class="cursor-pointer"
+            class="flex cursor-pointer"
             @click="openQR()"
           >
-            <QrcodeVue
-              :value="qr.value"
-              :size="qr.size"
-              :level="qr.level"
-              background="rgba(0,0,0,0)"
-              foreground="#fff"
-            />
+            <div class="mr-6 <md:hidden">
+              <img
+                src="/img/nw3-logo.jpg"
+                width="160"
+                height="160"
+              />
+            </div>
+            <div>
+              <QrcodeVue
+                :value="qr.value"
+                :size="qr.size"
+                :level="qr.level"
+                background="rgba(0,0,0,0)"
+                foreground="#fff"
+
+              />
+            </div>
           </div>
           <p class="mt-4 text-sm">
             <a :href="TELEGRAM_INVITE" target="_blank" class="hover:underline">
@@ -46,7 +56,8 @@
             Wake up, Neo...
           </VtInput>
           <VtText />
-          <VtText>Uninstalling legacy systems</VtText>
+          <VtText>Uninstalling legacy systems<br></VtText>
+          <VtText />
           <VtProgress prefix="[x] Finance     " />
           <VtProgress prefix="[x] Governance  " />
           <VtProgress prefix="[x] Education   " />
@@ -64,13 +75,17 @@
     </div>
     <footer class="flex">
       <div class="flex-1 flex items-center">
-        <div class="flex-1 flex justify-center text-xl">
-          <div class="flex items-center z-50">
+        <div class="flex-1 flex justify-between text-lg">
+          <div class="flex items-center ml-6 z-50 opacity-75">
             <i class="i-ph-peace mr-6" />
-            <i class="i-carbon-transgender mr-6" />
+            <i class="i-carbon-favorite mr-6" />
+            <i class="i-carbon-color-palette mr-6" />
+            <i class="i-carbon-microscope mr-6" />
+          </div>
+          <div class="flex items-center mr-6 z-50 opacity-75">
             <NuxtLink
               to="/impressum"
-              class="text-base hover:underline"
+              class="text-sm hover:underline"
             >
               Impressum
             </NuxtLink>
@@ -99,7 +114,7 @@ const { TELEGRAM_INVITE } = useRuntimeConfig()
 const qr: any = {
   value: TELEGRAM_INVITE,
   size: 160,
-  level: 'H', // L, M, Q, H
+  level: 'L' // H, L, M, Q, H
 }
 
 const terminalSettings = {
@@ -118,7 +133,7 @@ let lineCounter = 0
 
 /** Triggered whenever the terminal pushes a newline. */
 function terminalNewLine(event: Event): void {
-  if (lineCounter === 3) {
+  if (lineCounter === 4) {
     matrixMode.value = true
   } else {
     lineCounter++
