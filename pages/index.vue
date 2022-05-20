@@ -23,6 +23,9 @@
           v-if="terminalAnimationComplete"
           class="qr-container"
         >
+          <p class="mb-4 text-sm">
+            Join us!
+          </p>
           <div
             class="flex cursor-pointer"
             @click="openQR()"
