@@ -37,3 +37,9 @@ yarn preview
 ```
 
 Checkout the [deployment documentation](https://v3.nuxtjs.org/guide/deploy/presets) for more information.
+
+## Development Stats and Insights
+
+[https://repo-tracker.com/r/gh/toniengelhardt/helloworld-3.0](https://repo-tracker.com/r/gh/toniengelhardt/helloworld-3.0)
+
+Provided by [RepoTracker](https://repo-tracker.com) and [github-stats.com](https://github-stats.com).
